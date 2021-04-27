@@ -5,7 +5,10 @@ var colorPurple = "#cb3594";
 var colorGreen = "#659b41";
 var colorYellow = "#ffcf33";
 var colorBrown = "#986928";
+var colorWhite = "#FFFFFF";
 var color = colorPurple;
+
+var vsize = 10;
 
 // push --> ajoute un nouvel item à une array
 function addClick(x, y, dragging) {
@@ -13,7 +16,8 @@ function addClick(x, y, dragging) {
         x: x,
         y: y,
         dragging: dragging, // boolean --> possibilité de faire un bouton pour faire des lignes ou non
-        color: color
+        color: color,
+        vsize: vsize 
     } );
  }
 
@@ -25,11 +29,12 @@ function redraw() {
 
     //context.strokeStyle = color;
     context.lineJoin = "round";
-    context.lineWidth = 5;
+    // context.lineWidth = 5;
 
     for(var i = 0; i < clicks.length; i++) {
         context.beginPath();
         context.strokeStyle = clicks[i].color;
+        context.lineWidth = clicks[i].vsize;
         if(i > 0 && clicks[i - 1].dragging) {
             context.moveTo(clicks[i-1].x, clicks[i-1].y);
         }
@@ -97,7 +102,7 @@ function ready() {
         });
 
         $('#marron').click(function() {
-            color = colorBorwn;
+            color = colorBrown;
 
         });
 
@@ -105,6 +110,32 @@ function ready() {
             color = colorPurple;
 
         });
+
+        $('#small').click(function() {
+            vsize = 5;
+
+        });
+
+        $('#medium').click(function() {
+            vsize = 10;
+
+        });
+
+        $('#large').click(function() {
+            vsize = 20;
+
+        });
+
+        $('#huge').click(function() {
+            vsize = 30;
+
+        });
+
+        $('#blanc').click(function() {
+            color = colorWhite;
+
+        });
+
 }
 
 $(ready); // $() appel de la fonction lié à JQuery une fois que tout est loadé
