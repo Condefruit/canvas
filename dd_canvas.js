@@ -86,7 +86,7 @@ function ready() {
             addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, false, color);
             redraw();   
         }
-        mouseDown = false;
+        //mouseDown = false;
     });
 
     
@@ -135,6 +135,13 @@ function ready() {
             color = colorWhite;
 
         });
+
+        $('#clear').click(function() {
+            clicks = [];
+            redraw();
+
+        });
+    
 
 }
 
