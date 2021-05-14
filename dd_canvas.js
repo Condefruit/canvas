@@ -1,12 +1,15 @@
 // déclaration des var et valeur par défauts
 var clicks = []; // tableau pour stocker les valeurs des x,y, dragging --> potentiel retour en arrière programmable
 var mouseDown = false;
+var mouseIn = true;
 var colorPurple = "#cb3594";
 var colorGreen = "#659b41";
 var colorYellow = "#ffcf33";
 var colorBrown = "#986928";
 var colorWhite = "#FFFFFF";
 var color = colorPurple;
+colors = [colorBrown, colorGreen, colorYellow, colorPurple]
+vsizes = [5, 10, 20, 30]
 
 var vsize = 10;
 
@@ -48,15 +51,17 @@ function redraw() {
 }
 
 function onMouseDown(event) {
-    mouseDown = true;
-    addClick(event.pageX - event.target.offsetLeft, event.pageY - event.target.offsetTop, true);
-    redraw();
+    if(mouseIn) {
+        mouseDown = true;
+        addClick(event.pageX - event.target.offsetLeft, event.pageY - event.target.offsetTop, true);
+        redraw();
+    }
 }
 
 function ready() {
     //Chope le canvas
     canvas = $("#canv"); //$() Permet d'acceder a des elements du document html / # --> variable
-    context = canvas[0].getContext("2d");
+    context = canvas[0].getContext("2d"); // chope les positions par rapport au canvas ?
 
     // fonction mouse down --> addclick function --> permet de choper le x et le y dans une array
     // + paint en boolean
@@ -65,7 +70,7 @@ function ready() {
 
     // Déplacement de la souries --> comme si on dessinait avec un marker (si paint = true)
     canvas.mousemove(function(e){
-        if(mouseDown) {
+        if(mouseDown & mouseIn) {
             addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true, color);
             redraw();
         }
@@ -86,12 +91,37 @@ function ready() {
             addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, false, color);
             redraw();   
         }
-        //mouseDown = false;
+        mouseIn = false;
     });
+
+    // La souris rentre le canvas --> paint = false
+    canvas.mouseenter(function(e){
+        //if(e.whichbuttons & 1 === 1) {
+            {
+/*
+  1 = Left   mouse button
+  2 = Centre mouse button
+  3 = Right  mouse button
+*/
+    //if(e.buttons & 1 === 1) { moins reconnu par les navigateurs parce que les bouttons varient ?
+        if(mouseDown) {
+            addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true, color);
+            redraw();
+        }
+            mouseIn = true;   
+        }
+    });
+
+    /* FONCTION TABLETTE !!!!!!!!!
+    canvas.touchstart(function(e){
+        addClick(e.pageX - this.offsetLeft, e.pageY - this.offsetTop, true, color);
+        redraw();
+    });
+    */
 
     
         // Changement de couleur avec appuyage sur le boutonage
-        $('#vert').click(function() {
+   /*     $('#vert').click(function() {
             color = colorGreen;
 
         });
@@ -110,8 +140,9 @@ function ready() {
             color = colorPurple;
 
         });
+        */
 
-        $('#small').click(function() {
+        /*$('#small').click(function() {
             vsize = 5;
 
         });
@@ -131,6 +162,8 @@ function ready() {
 
         });
 
+        */
+
         $('#blanc').click(function() {
             color = colorWhite;
 
@@ -139,6 +172,32 @@ function ready() {
         $('#clear').click(function() {
             clicks = [];
             redraw();
+
+        });
+
+        $(function() {
+            let buttons = ["Kentin tete de bite", "Couleur verte", "Couleur jaune", "Couleur rose"];
+            for(let i = 0; i < buttons.length; i++) {
+                $("#Tools2").append("<input id=\"button"+i+"\" type=\"image\" border=1 src=\"rond.png\" width=\""+(40+i*20)+"em\" height=\""+(40+i*20)+"em\"></input> ");
+                let label = buttons[i];
+                $("#button"+i).click(function() {
+                    vsize = vsizes[i];
+                });
+            }
+
+        });
+
+        $(function() {
+            let buttons = ["Kentin tete de bite", "Couleur verte", "Couleur jaune", "Couleur rose"];
+            for(let i = 0; i < buttons.length; i++) {
+                $("#Tools").append("<input id=\"button"+i+"\" type=\"image\" border=1 src=\"Color"+i+".png\" width=\"70em\" height=\"70em\"></input> ");
+                let label = buttons[i];
+                $("#button"+i).click(function() {
+                    color = colors[i];
+                    //$("#Truc").append(label + "<BR>");
+                    //$("#Truc").append(label + " ");
+                });
+            }
 
         });
     
