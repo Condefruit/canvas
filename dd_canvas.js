@@ -201,7 +201,6 @@ function ready() {
 
         });
     
-
 }
 
 $(ready); // $() appel de la fonction lié à JQuery une fois que tout est loadé
